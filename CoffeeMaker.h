@@ -5,6 +5,7 @@
 #ifndef HONORSPROJECT_COFFEEMAKER_H
 #define HONORSPROJECT_COFFEEMAKER_H
 
+#include <iostream>
 
 #include "components/type/Component.h"
 #include "components/Heater.h"
@@ -12,18 +13,29 @@
 #include "components/Tank.h"
 #include "components/Sensor.h"
 #include "components/Indicator.h"
+#include "helpers/ProgressBar.h"
+#include "status/IndicatorStatus.h"
 
+using std::cout;
 
 class CoffeeMaker {
 public:
+    CoffeeMaker();
+
     void fillWaterTank();
-    void startBoiler();
+
     void emptyCarafe();
+
     void brew();
 
 private:
     TanksStatus checkTanks();
-    static void printMessage(const string& message);
+
+    void brewTick();
+
+    void startBoiler();
+
+    static void printMessage(const string &message, bool appendNewline = false);
 
 protected:
     // Plate Heater
@@ -31,7 +43,7 @@ protected:
     Indicator plateHeaterIndicator = Indicator("Plate Heater");
 
     // Boiler
-    Boiler boiler =  Boiler("Main Boiler");
+    Boiler boiler = Boiler("Main Boiler");
 
     // Carafe, Carafe Detection
     Tank carafe = Tank("Carafe");
@@ -39,7 +51,6 @@ protected:
 
     // Brew Indicator
     Indicator brewIndicator = Indicator("Brew");
-
 };
 
 #endif //HONORSPROJECT_COFFEEMAKER_H

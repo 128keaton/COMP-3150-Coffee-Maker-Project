@@ -19,6 +19,14 @@ public:
         this->value = value;
     }
 
+    [[nodiscard]] bool isTriggered() const {
+        return this->triggered;
+    }
+
+    void trigger(bool isTriggered = true) {
+        this->triggered = isTriggered;
+    }
+
 protected:
     bool triggered = false;
     double value = 0.0;
