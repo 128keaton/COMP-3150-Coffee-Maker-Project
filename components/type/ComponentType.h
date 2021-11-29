@@ -1,0 +1,11 @@
+//
+// Created by Keaton Burleson on 11/28/21.
+//
+
+#ifndef HONORSPROJECT_COMPONENTTYPE_H
+#define HONORSPROJECT_COMPONENTTYPE_H
+
+enum ComponentType {
+    TANK, BOILER, SENSOR, HEATER, INDICATOR
+};
+#endif //HONORSPROJECT_COMPONENTTYPE_H

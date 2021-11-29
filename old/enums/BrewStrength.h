@@ -1,0 +1,11 @@
+//
+// Created by Keaton Burleson on 11/28/21.
+//
+
+#ifndef HONORSPROJECT_BREWSTRENGTH_H
+#define HONORSPROJECT_BREWSTRENGTH_H
+
+enum BrewStrength {
+    WEAK, REGULAR, STRONG, SUPER_STRONG
+};
+#endif //HONORSPROJECT_BREWSTRENGTH_H
