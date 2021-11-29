@@ -21,14 +21,14 @@ public:
     }
 
 
-    void startBoiling(const std::function<void(double)> &p) {
+    void startBoiling(const std::function<void(double)> &statusCallback) {
         this->setHeating(true);
 
         for (unsigned t = 0; t <= 40 * 1000; t += 1000) {
             const double nextTemp = getEmulatedTemp((float) t, 0, 10, 40000);
 
             this->updateTemperature(nextTemp);
-            p(nextTemp);
+            statusCallback(nextTemp);
 
             usleep(15 * 5000 * 10);
         }

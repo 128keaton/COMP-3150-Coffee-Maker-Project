@@ -3,9 +3,13 @@
 //
 
 #include <iostream>
+#include <iomanip>
 #include "CoffeeMaker.h"
 
-using std::cout, std::endl;
+using std::cout,
+      std::endl,
+      std::fixed,
+      std::setprecision;
 
 void CoffeeMaker::brew() {
     const TanksStatus tanksStatus = this->checkTanks();
@@ -53,7 +57,13 @@ void CoffeeMaker::emptyCarafe() {
 
 void CoffeeMaker::startBoiler() {
     this->boiler.startBoiling([](double val) {
-        std::cout << "[Coffee Maker][Boiler]" << val << "*F" << endl;
+        std::cout <<
+        "[Coffee Maker][Boiler] Boiling - " <<
+        fixed <<
+        setprecision(2)<<
+        val << "°" <<
+        "F" <<
+        endl;
     });
 }
 
