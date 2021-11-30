@@ -23,7 +23,28 @@ public:
     }
 
     void setHeating(bool isNowHeating) {
+        const bool shouldUpdate = (isNowHeating != this->heating);
         this->heating = isNowHeating;
+
+        if (shouldUpdate) {
+            this->updateHeatingStatus();
+        }
+    }
+
+    void watchTemperatureValue(std::function<void(double)> &cb, bool emitInitial = true) {
+       this->watchSensorValue(cb, emitInitial);
+    }
+
+    void watchFilledStatus(std::function<void(bool)> &cb, bool emitInitial = true) {
+        this->watchSensorTriggered(cb, emitInitial);
+    }
+
+    void watchHeatingState(std::function<void(bool)> &cb, bool emitInitial = true) {
+        this->heatingCallback = cb;
+
+        if (emitInitial) {
+            cb(this->heating);
+        }
     }
 
 private:
@@ -31,13 +52,20 @@ private:
 
 protected:
     bool heating = false;
+    std::function<void(bool)> heatingCallback = nullptr;
 
-    void updateTemperature(double value) {
-        this->value = value;
+    void updateTemperature(double value, bool emit = false) {
+        this->setValue(value, emit);
     }
 
     double getTemperature() {
-        return this->value;
+        return this->getValue();
+    }
+
+    void updateHeatingStatus() {
+        if (this->heatingCallback != nullptr) {
+            this->heatingCallback(this->heating);
+        }
     }
 };
 

@@ -20,14 +20,23 @@ std::setprecision;
 
 class ProgressBar {
 public:
-    static void percentage(int percentage, const string &title = "") {
-        string progress = "[" + string(percentage, '*') + string(100 - percentage, ' ') + "]";
-        cout << "\r\033[F" << progress << " " << percentage << "% " << title << flush;
+    static void percentage(int current, int total = 100, const string &title = "", bool last = false) {
+        double percentage = ((double) current) / ((double) total) * 100;
+
+        if (percentage >= 0 && percentage <= 100) {
+            string progress = "[" + string((int) percentage, '*') + string(100 - (int) percentage, ' ') + "]";
+
+            cout << "\r\033[F" << progress << " " << (int) percentage << "% " << title << flush;
+        }
+
+        if (last) {
+            cout << endl;
+        }
     }
 
-    static void temperature(double current, double max, const string &title = "") {
+    static void temperature(double current, double max, const string &title = "", bool last = false) {
         double percentage = (current / max) * 100;
-        string progress = "[" + string((int)percentage, '*') + string(100 - (int)percentage, ' ') + "]";
+        string progress = "[" + string((int) percentage, '*') + string(100 - (int) percentage, ' ') + "]";
         cout <<
              "\r\033[F" <<
              progress <<
@@ -43,6 +52,10 @@ public:
              "°C " <<
              title <<
              flush;
+
+        if (last) {
+            cout << endl;
+        }
     }
 };
 

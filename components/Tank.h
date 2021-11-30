@@ -30,7 +30,20 @@ public:
         return this->value == 0.0;
     }
 
-    void fill() {
+    void fill(const std::function<void(double)> &statusCallback, double speed = 10) {
+        for(int i = 0; i <= this->maxCapacity; i += speed) {
+            this->value = i;
+
+            if (this->value <= this->maxCapacity) {
+                statusCallback(this->value);
+                usleep(15 * 5000 * 10);
+            }
+        }
+
+        this->triggered = false;
+    }
+
+    void fillNow() {
         this->value = this->maxCapacity;
         this->triggered = false;
     }
@@ -62,9 +75,8 @@ public:
         return this->value;
     }
 
-private:
-    void updateTriggered() {
-        this->triggered = (!this->isEmpty() && !this->isFull());
+    [[nodiscard]] double getMaxCapacity() const {
+        return this->maxCapacity;
     }
 };
 

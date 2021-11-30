@@ -5,7 +5,6 @@
 #ifndef HONORSPROJECT_COFFEEMAKER_H
 #define HONORSPROJECT_COFFEEMAKER_H
 
-#include <iostream>
 
 #include "components/type/Component.h"
 #include "components/Heater.h"
@@ -15,17 +14,14 @@
 #include "components/Indicator.h"
 #include "helpers/ProgressBar.h"
 #include "status/IndicatorStatus.h"
+#include "types/BrewConfig.h"
+#include "components/FilterBasket.h"
+#include "logging/ContextLogger.h"
 
-using std::cout;
 
-class CoffeeMaker {
+class CoffeeMaker: public ContextLogger {
 public:
-    CoffeeMaker();
-
-    void fillWaterTank();
-
-    void emptyCarafe();
-
+    explicit CoffeeMaker(BrewConfig config);
     void brew();
 
 private:
@@ -33,9 +29,10 @@ private:
 
     void brewTick();
 
-    void startBoiler();
-
-    static void printMessage(const string &message, bool appendNewline = false);
+    void setupBoilerListener(double initialTemperature, bool boilerFilled);
+    void setupFilterListeners(BrewStrength strength);
+    void setupCarafeListener(bool carafeAvailable);
+    void setupIndicators();
 
 protected:
     // Plate Heater
@@ -51,6 +48,11 @@ protected:
 
     // Brew Indicator
     Indicator brewIndicator = Indicator("Brew");
+
+    // Coffee Filter Basket
+    FilterBasket filterBasket = FilterBasket("Filter Basket");
+    CoffeeFilter mainFilter = CoffeeFilter("Main Filter");
+    CoffeeGrinds currentGrinds = CoffeeGrinds();
 };
 
 #endif //HONORSPROJECT_COFFEEMAKER_H
