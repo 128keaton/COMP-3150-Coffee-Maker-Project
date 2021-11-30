@@ -12,12 +12,14 @@
 #include "type/Component.h"
 #include "Tank.h"
 #include "Heater.h"
+#include "Indicator.h"
 
 using std::string, std::function;
 
 class Boiler : public Heater, public Tank {
 public:
     explicit Boiler(const string &name) : Heater(name), Tank(name, 300.0, true) {
+        this->setInitialTemperature();
     }
 
 
@@ -32,6 +34,22 @@ public:
 
             usleep(15 * 5000 * 10);
         }
+    }
+
+    void checkWaterReady(Indicator boilIndicator, const std::function<void(double)> &statusCallback) {
+        this->updateHeatingStatus();
+
+        if (isReady()) {
+            statusCallback(this->getTemperature());
+            return;
+        }
+
+        boilIndicator.setBlinking();
+        this->startBoiling(statusCallback);
+    }
+
+    void setInitialTemperature(double temperature = 0.0) {
+        this->updateTemperature(temperature, true);
     }
 
     bool isReady() {
